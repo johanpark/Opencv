@@ -8,8 +8,8 @@ Mat hue;
 
 int main(int argc, char* argv[])
 {
-	Mat img = imread("C:/Users/pyhan/OneDrive/¹ÙÅÁ È­¸é/model_face.jpg"); //¸ğµ¨ ¿µ»ó
-	Mat Inputimg = imread("C:/Users/pyhan/OneDrive/¹ÙÅÁ È­¸é/veteran.jpg"); //ÀÔ·Â ¿µ»ó
+	Mat img = imread("model_face.jpg"); //ëª¨ë¸ ì˜ìƒ
+	Mat Inputimg = imread("veteran.jpg"); //ì…ë ¥ ì˜ìƒ
 	namedWindow("Model Image");
 	imshow("Model Image", img);
 	namedWindow("Input Image");
@@ -17,32 +17,32 @@ int main(int argc, char* argv[])
 
 
 	Mat hsv;
-	cvtColor(img, hsv, COLOR_BGR2HSV);  //¸ğµ¨ ¿µ»ó ÄÁ¹öÆ® HSV
+	cvtColor(img, hsv, COLOR_BGR2HSV);  //ëª¨ë¸ ì˜ìƒ ì»¨ë²„íŠ¸ HSV
 
 	Mat hsvImage;
-	cvtColor(Inputimg, hsvImage, COLOR_BGR2HSV); //ÀÔ·Â ¿µ»ó ÄÁ¹öÆ® HSV
+	cvtColor(Inputimg, hsvImage, COLOR_BGR2HSV); //ì…ë ¥ ì˜ìƒ ì»¨ë²„íŠ¸ HSV
 
 
 	hue.create(hsv.size(), hsv.depth());
 	int ch[] = { 0,0 };
-	mixChannels(&hsv, 1, &hue, 1, ch, 1); //Ã¤³Î ºĞ¸® »ö(hue)¼ººĞ ÀÌ¿ë
+	mixChannels(&hsv, 1, &hue, 1, ch, 1); //ì±„ë„ ë¶„ë¦¬ ìƒ‰(hue)ì„±ë¶„ ì´ìš©
 
 	int histSize =256;
 	float hue_range[] = { 0,256 };
 	const float* ranges = { hue_range };
 	int channels = 0;
-	int dims = 1;  //È÷½ºÅä±×·¥ »ı¼º ÀÎÀÚµé
+	int dims = 1;  //íˆìŠ¤í† ê·¸ë¨ ìƒì„± ì¸ìë“¤
 
 	Mat hist;
-	calcHist(&hue, 1, &channels,Mat(), hist, dims, &histSize, &ranges, true, false); //¸ğµ¨ ¿µ»ó È÷½ºÅä±×·¥
-	normalize(hist, hist, 0, 255, NORM_MINMAX, -1, Mat()); //Á¤±ÔÈ­
+	calcHist(&hue, 1, &channels,Mat(), hist, dims, &histSize, &ranges, true, false); //ëª¨ë¸ ì˜ìƒ íˆìŠ¤í† ê·¸ë¨
+	normalize(hist, hist, 0, 255, NORM_MINMAX, -1, Mat()); //ì •ê·œí™”
 
 	Mat backproj;
-	calcBackProject(&hsvImage, 1, &channels, hist, backproj, &ranges, 1, true); //ÀÔ·Â¿µ»ó È÷½ºÅä±×·¥ ¿ªÅõ¿µ
+	calcBackProject(&hsvImage, 1, &channels, hist, backproj, &ranges, 1, true); //ì…ë ¥ì˜ìƒ íˆìŠ¤í† ê·¸ë¨ ì—­íˆ¬ì˜
 
 	Mat backproj2;
-	normalize(backproj, backproj2, 0, 255, NORM_MINMAX, CV_8U); //Á¤±ÔÈ­
-	imshow("BackProj2", backproj2); //Ãâ·Â
+	normalize(backproj, backproj2, 0, 255, NORM_MINMAX, CV_8U); //ì •ê·œí™”
+	imshow("BackProj2", backproj2); //ì¶œë ¥
 
 
 	waitKey(0);
